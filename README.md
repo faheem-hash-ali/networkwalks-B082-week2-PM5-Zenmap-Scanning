@@ -8,9 +8,9 @@
 ---
 
 ## 📌 Executive Summary
-Network scanning ethical hacking aur penetration testing ka Phase 2 hai. Is practical module mein Zenmap (official Nmap GUI) ka istemal karte hue local area network (LAN) subnet ki discovery, active host identification, aur network topology mapping perform ki gayi hai.
+Network scanning constitutes Phase 2 of penetration testing and ethical hacking. In this practical module, Zenmap (the official graphical frontend for Nmap) was utilized to perform local area network (LAN) discovery, active host identification, and network topology mapping.
 
-Is exercise ka maqsad active devices ko identify karna, unke IP/MAC parameters ko map karna, aur unauthorized ya rogue assets ko visually track karna tha.
+The objective of this assessment was to map active devices across the subnet, identify live IP and interface parameters, and visually document connected network assets.
 
 ---
 
@@ -36,40 +36,39 @@ Is exercise ka maqsad active devices ko identify karna, unke IP/MAC parameters k
 ## 🔬 Hands-on Technical Activities & Verification
 
 ### 🔹 Task 1 & 2: Local Subnet Identification
-Windows Command Prompt mein `ipconfig` command chala kar local host-only interface ka IP address aur subnet mask verify kiya gaya:
+Executed the `ipconfig` command in the Windows Command Prompt to identify the local network configuration and subnet boundaries:
 * **Local Subnet:** `192.168.56.0/24`
-* **Default Gateway / Host:** `192.168.56.1`
+* **Default Host Interface:** `192.168.56.1`
 
 ---
 
-### 🔹 Task 3 & 4: Ping Scan & Live Host Count
-Zenmap mein target subnet `192.168.56.0/24` enter karke **Ping Scan** profile select kiya gaya.
+### 🔹 Task 3 & 4: Ping Scan & Live Host Discovery
+Configured Zenmap with the target subnet `192.168.56.0/24` and selected the **Ping Scan** profile to identify active hosts.
 
 `nmap -sn 192.168.56.0/24`
 
-* **Scan Duration:** 256 IP addresses scanned in 12.10 seconds.
-* **Total Live Hosts Discovered:** 1 active host (`192.168.56.1`).
+* **Scan Duration:** Scanned 256 IP addresses in 12.10 seconds.
+* **Live Hosts Discovered:** 1 active host (`192.168.56.1`).
 
 #### Evidence - Nmap Output Scan:
 ![Zenmap Ping Scan](Screenshot_ping_scan.png)
 
 ---
 
-### 🔹 Task 5 & 6: IP & MAC Address Identification
-* **Live Host IP:** `192.168.56.1`
-* **MAC Address Observation:** Nmap scanning machine ke apne local network interface ka MAC address remote packet ki tarah display nahi karta (yeh direct `ipconfig /all` se verify hota hai).
+### 🔹 Task 5 & 6: IP & MAC Address Enumeration
+* **Active Host IP:** `192.168.56.1`
+* **MAC Address Observation:** Nmap does not display the MAC address for the scanning machine's own local adapter (verified locally via `ipconfig /all`).
 
 ---
 
 ### 🔹 Task 7: Network Topology Generation & Export
-Zenmap ke **Topology** tab ko open karke Legend enable kiya gaya aur interactive network node graph inspect kiya gaya. Graphic ko high-resolution PDF/image format mein export kiya gaya.
+Opened the **Topology** tab in Zenmap, enabled the visual legend, and inspected the radial node graph. Exported the network map as a vector graphic/PDF.
 
-#### Evidence - Zenmap Topology Interface & Export:
+#### Evidence - Zenmap Topology Interface:
 ![Zenmap Topology GUI](Screenshot_1st_nmap_scan.png)
 
 #### Rendered Network Topology Graphic:
-![Network Topology Map][1st_sacn.pdf](https://github.com/user-attachments/files/31264812/1st_sacn.pdf)
-
+[Download/View Topology PDF](https://github.com/user-attachments/files/31264812/1st_sacn.pdf)
 
 ---
 
@@ -77,21 +76,21 @@ Zenmap ke **Topology** tab ko open karke Legend enable kiya gaya aur interactive
 
 | # | Finding | Observation / Proof | Potential Security Risk | Risk Level |
 | :---: | :--- | :--- | :--- | :---: |
-| **01** | Subnet Responsiveness | Active response received on `192.168.56.1` | Enables attackers to identify live target addresses on the segment | `Low` |
-| **02** | Unsegmented Local Adapters | Discovery probes map internal interface | Internal discovery facilitates lateral reconnaissance | `Low` |
+| **01** | Subnet Responsiveness | Active ICMP/probe response on `192.168.56.1` | Enables attackers to verify live targets across the address space | `Low` |
+| **02** | Unsegmented Local Adapters | Host interface responds to internal discovery scans | Unrestricted discovery aids lateral movement and reconnaissance | `Low` |
 
 ---
 
 ## 🛡️ Defensive Recommendations & Hardening
 
-* **Firewall ICMP Filtering:** Local endpoints par ICMP echo requests (ping probes) ko block karein agar internal asset discovery restrict karni ho.
-* **Network Segmentation & VLANs:** Virtual machines aur host adapters ko separate VLANs / isolated private networks mein rakhein.
-* **Periodic Network Discovery:** Administrators ko apne subnets par periodic Nmap scans chalane chahiyein taake unauthorized rogue devices detect ho sakein.
+* **ICMP Probe Filtering:** Configure host firewall rules to drop unsolicited ICMP echo requests if stealth asset discovery protection is required.
+* **Network Segmentation & VLANs:** Isolate virtual adapters and test lab environments from primary production networks to prevent unintended reachability.
+* **Routine Asset Auditing:** Conduct periodic internal network discovery scans to identify unauthorized or rogue devices connected to internal subnets.
 
 ---
 
 ## 👨‍💻 Author / Pentester Details
 * **Pentester Name:** Faheem Ali Wattoo
 * **Program:** Networkwalks Cybersecurity & Ethical Hacking Internship
-* **Batch:** B082 Networkwalks
+* **Batch:** B082-Networkwalks
 * **Lead Instructor:** [Waqas Karim CCIE](https://www.linkedin.com/in/waqaskarim/)
